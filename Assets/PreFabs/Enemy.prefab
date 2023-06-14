@@ -130,12 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862dc81bd7b9bf843b31807b89027735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   speed: 1
 --- !u!210 &2945499055173786849
 SortingGroup:
