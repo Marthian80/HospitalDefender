@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BacteriaSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject bacteria;
+    [SerializeField] private GameObject[] bacteria = new GameObject[4];
     [SerializeField][Range(0, 50)] private int poolSize = 5;
     [SerializeField][Range(0.1f, 30f)] private float spawnTimer = 1f;
 
@@ -26,7 +26,7 @@ public class BacteriaSpawner : MonoBehaviour
 
         for (int i = 0; i < bacteriaPool.Length; i++)
         {
-            bacteriaPool[i] = Instantiate(bacteria, transform.position, Quaternion.identity);
+            bacteriaPool[i] = Instantiate(bacteria[Random.Range(0, bacteria.Length -1)], transform.position, Quaternion.identity);
             bacteriaPool[i].SetActive(false);
         }
     }
