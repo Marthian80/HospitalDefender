@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    [SerializeField] private float range = 15f;
+    [SerializeField] private float range = 5f;
     [SerializeField] private GameObject bulletPreFab;    
     [SerializeField] private float attackCooldown = 2;
 

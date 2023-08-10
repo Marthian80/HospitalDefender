@@ -46,6 +46,14 @@ public class Gridmanager : MonoBehaviour
         }
     }
 
+    public void SetNodeAsContainingPatient(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].hasPatient = true;
+        }
+    }
+
     public Vector2Int GetCoordinatesFromPosition(Vector2 position)
     {
         Vector2Int coordinates = new Vector2Int();
@@ -74,5 +82,5 @@ public class Gridmanager : MonoBehaviour
                 grid.Add(coordinates, new Node(coordinates, true));
             }
         }
-    }
+    }    
 }

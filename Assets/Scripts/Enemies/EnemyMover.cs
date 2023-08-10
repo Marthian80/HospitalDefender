@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyMover : MonoBehaviour
@@ -11,11 +12,15 @@ public class EnemyMover : MonoBehaviour
     private List<Node> path = new List<Node>();
     private Gridmanager gridManager;
     private Pathfinding pathfinder;
+    private Enemy enemy;
+    private InfectionRate infectionRate;
 
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();
         pathfinder = FindObjectOfType<Pathfinding>();
+        enemy = FindObjectOfType<Enemy>();
+        infectionRate = FindObjectOfType<InfectionRate>();
 
         //Activate event listener
         EventManager.StartListening("RecalculatePath", RecalculatePath);
@@ -51,17 +56,34 @@ public class EnemyMover : MonoBehaviour
         StartCoroutine(FollowPathRoutine());
     }
 
-    private void FinishPath()
-    {        
+    private void FinishPath(Vector2 position)
+    {
         gameObject.SetActive(false);
+        enemy.StealGold();
+        
+        if (CheckForPatientToInfect(position))
+        {
+            infectionRate.InfectPatientAtLocation(position);
+        }
+    }
+
+    private bool CheckForPatientToInfect(Vector2 position)
+    {
+        var finishedPositionCoordinates = gridManager.GetCoordinatesFromPosition(position);
+        var node = gridManager.GetNode(finishedPositionCoordinates);
+
+        return node.hasPatient;
     }
 
     private IEnumerator FollowPathRoutine()
     {
-        for(int i = 1; i < path.Count; i++)
+        Vector2 endPosition = transform.position;
+        Vector2 startPosition = transform.position;
+
+        for (int i = 1; i < path.Count; i++)
         {
-            Vector2 startPosition = transform.position;
-            Vector2 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
+            startPosition = transform.position;
+            endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
             float travelPercent = 0f;
 
             while (travelPercent < 1f)
@@ -71,6 +93,6 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        FinishPath();
+        FinishPath(endPosition);
     }
 }

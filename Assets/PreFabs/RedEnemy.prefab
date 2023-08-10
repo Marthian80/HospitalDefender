@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5273759159681994871}
   - component: {fileID: -1714809205078879761}
   - component: {fileID: -1442021561400207788}
+  - component: {fileID: 7845515856931252485}
   m_Layer: 0
   m_Name: RedEnemy
   m_TagString: Untagged
@@ -158,3 +159,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHitPoints: 5
+  deathVFX: {fileID: 4693821815289999644, guid: 8ff935b18a652d946a1f99be8e35b6a2, type: 3}
+--- !u!114 &7845515856931252485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631599504037823843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5209e6eca8e9b4781764124d7ad63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteFlashMat: {fileID: 2100000, guid: a8996c6a317aac44e93dcc049d5ea809, type: 2}
+  restoreDefaultMatTime: 0.1

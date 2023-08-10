@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -379,7 +379,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BlueBacteria_8: -757566063
+      BlueBacteria_0: 49712260
       BlueBacteria_9: 1957511377
       BlueBacteria_11: -1657866552
       BlueBacteria_4: 954063468
@@ -389,8 +389,8 @@ TextureImporter:
       BlueBacteria_10: -528167865
       BlueBacteria_7: -1601669383
       BlueBacteria_5: -376621499
-      BlueBacteria_0: 49712260
       BlueBacteria_2: 711079943
+      BlueBacteria_8: -757566063
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

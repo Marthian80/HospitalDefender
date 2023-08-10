@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 5404402715084673499}
   - component: {fileID: 6869062107943276479}
   - component: {fileID: 8397842928437236749}
+  - component: {fileID: 172546496618237913}
   m_Layer: 0
   m_Name: BlueEnemy
   m_TagString: Untagged
@@ -197,3 +198,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHitPoints: 5
+  deathVFX: {fileID: 4693821815289999644, guid: 3074d192bbaaab1438d376f188d60ba3, type: 3}
+--- !u!114 &172546496618237913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463106240071098065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5209e6eca8e9b4781764124d7ad63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteFlashMat: {fileID: 2100000, guid: a8996c6a317aac44e93dcc049d5ea809, type: 2}
+  restoreDefaultMatTime: 0.1
