@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyMover : MonoBehaviour
 {    
@@ -34,7 +32,9 @@ public class EnemyMover : MonoBehaviour
 
     private void ReturnToStart()
     {
-        transform.position = gridManager.GetPositionFromCoordinates(pathfinder.StartCoordinates);
+        pathfinder.SetRandomStartPosition();
+        pathfinder.SetRandomDestinationPosition();
+        transform.position = gridManager.GetPositionFromCoordinates(pathfinder.CurrentStartCoordinates);
     }
 
     private void RecalculatePath(bool resetPath)
@@ -43,7 +43,7 @@ public class EnemyMover : MonoBehaviour
 
         if (resetPath)
         {
-            coordinates = pathfinder.StartCoordinates;
+            coordinates = pathfinder.CurrentStartCoordinates;
         }
         else
         {

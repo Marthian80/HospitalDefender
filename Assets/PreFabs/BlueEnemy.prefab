@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862dc81bd7b9bf843b31807b89027735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.5
 --- !u!95 &5832265460640030769
 Animator:
   serializedVersion: 4
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f6709699a505f47a6db67aff2c4e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldReward: 25
+  goldPenalty: 25
 --- !u!114 &8397842928437236749
 MonoBehaviour:
   m_ObjectHideFlags: 0

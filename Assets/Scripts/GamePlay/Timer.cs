@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
+    private LevelManager levelManager;
     [SerializeField] private float timeToSurviveLevel = 180f;
     public float CurrentTimeLeft { get { return timeToSurviveLevel; } }
 
@@ -10,8 +11,12 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        UpdateTimer();
-        
+        UpdateTimer();        
+    }
+
+    private void Awake()
+    {
+        levelManager = FindObjectOfType<LevelManager>();
     }
 
     private void UpdateTimer()
@@ -23,6 +28,11 @@ public class Timer : MonoBehaviour
         if (previousTime != timeToSurviveLevel && onTimerChange != null)
         {
             onTimerChange();
+        }
+
+        if (timeToSurviveLevel <= 0)
+        {
+            levelManager.LoadLevelWon();
         }
     }
 }

@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    [SerializeField] private Vector2Int startCoordinates;
-    [SerializeField] private Vector2Int destinationCoordinates;
+    [SerializeField] private List<Vector2Int> startCoordinates = new List<Vector2Int>();
+    [SerializeField] private List<Vector2Int> destinationCoordinates = new List<Vector2Int>();
 
-    public Vector2Int StartCoordinates { get { return startCoordinates; } }    
-    public Vector2Int DestinationCoordinates { get { return destinationCoordinates; } }
+    private Vector2Int currentStartCoordinates;
+    public Vector2Int CurrentStartCoordinates { get { return currentStartCoordinates; } }   
+    private Vector2Int currentDestinationCoordinates;
+    public Vector2Int CurrentDestinationCoordinates { get { return currentDestinationCoordinates; } }
 
     private Node startNode;
     private Node destinationNode;
@@ -25,11 +27,11 @@ public class Pathfinding : MonoBehaviour
     {
         gridManager = FindObjectOfType<Gridmanager>();
 
-        if (gridManager!= null ) 
+        if (gridManager!= null )
         {
             grid = gridManager.Grid;
-            startNode = grid[startCoordinates];
-            destinationNode = grid[destinationCoordinates];
+            SetRandomStartPosition();
+            SetRandomDestinationPosition();
         }
     }
 
@@ -38,9 +40,21 @@ public class Pathfinding : MonoBehaviour
         GetNewPath();
     }
 
+    public void SetRandomStartPosition()
+    {
+        currentStartCoordinates = startCoordinates[Random.Range(0, startCoordinates.Count)];
+        startNode = grid[currentStartCoordinates];
+    }
+
+    public void SetRandomDestinationPosition()
+    {
+        currentDestinationCoordinates = destinationCoordinates[Random.Range(0, destinationCoordinates.Count)];
+        destinationNode = grid[currentDestinationCoordinates];
+    }
+
     public List<Node> GetNewPath()
     {
-        return GetNewPath(startCoordinates);
+        return GetNewPath(currentStartCoordinates);
     }
 
     public List<Node> GetNewPath(Vector2Int currentCoordinates)
@@ -86,7 +100,7 @@ public class Pathfinding : MonoBehaviour
             currentSearchNode = frontier.Dequeue();
             currentSearchNode.isExplored = true;
             ExpoloreNeighbours();
-            if (currentSearchNode.coordinates == destinationCoordinates)
+            if (currentSearchNode.coordinates == currentDestinationCoordinates)
             {
                 isRunning = false;
             }
