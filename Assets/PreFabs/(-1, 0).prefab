@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.14093776, g: 0.41509432, b: 0.1318381, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 23bd95cdc8851ff4183a422b68714c7f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: -3751453329855568228}
   - component: {fileID: 4661777403842488668}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: (-1, 0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 6558783144758344008, guid: 0cb8117e756e74441a427ab559c739ac, type: 3}
+  buildMenu: {fileID: 0}
   isPlaceable: 0
+  containsPatient: 0
 --- !u!61 &4661777403842488668
 BoxCollider2D:
   m_ObjectHideFlags: 0
