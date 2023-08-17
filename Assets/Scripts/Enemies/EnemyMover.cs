@@ -59,11 +59,11 @@ public class EnemyMover : MonoBehaviour
     private void FinishPath(Vector2 position)
     {
         gameObject.SetActive(false);
-        enemy.StealGold();
-        
+                
         if (CheckForPatientToInfect(position))
         {
             infectionRate.InfectPatientAtLocation(position);
+            enemy.StealGold();
         }
     }
 

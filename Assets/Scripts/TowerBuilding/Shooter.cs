@@ -9,8 +9,14 @@ public class Shooter : MonoBehaviour
     [SerializeField] private float attackCooldown = 2;
 
     private Transform target;
+    private AudioPlayer audioPlayer;
     private float targetAngle;
     private bool canAttack = true;
+
+    private void Awake()
+    {
+        audioPlayer = FindObjectOfType<AudioPlayer>();
+    }
 
     private void Update()
     {
@@ -49,6 +55,7 @@ public class Shooter : MonoBehaviour
             canAttack = false;
             var newSoapBullet = Instantiate(bulletPreFab, gameObject.transform.position, quaternion.Euler(0, 0, -targetAngle));
             newSoapBullet.GetComponent<SoapBullet>().Target = target;
+            audioPlayer.PlayShootSoapClip();
             StartCoroutine(AttackCoolDownRoutine());                       
         }
     }       

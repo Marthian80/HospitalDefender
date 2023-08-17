@@ -3,22 +3,38 @@ using UnityEngine;
 
 public class Bank : MonoBehaviour
 {
+    private static Bank instance;
+
     [SerializeField] private int startingBalance = 150;
 
     [SerializeField] private int currentBalance;
-    public int CurrentBalance { get { return currentBalance; } }
+    public int CurrentBalance { get { return instance.currentBalance; } }
 
     public event Action onBalanceChange;
 
     private void Awake()
     {
-        currentBalance = startingBalance;        
+        ManageSingleton();
+        currentBalance = startingBalance;
+    }
+
+    private void ManageSingleton()
+    {
+        if (instance != null)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     public void Deposit(int amount)
     {
-        currentBalance += Mathf.Abs(amount);
-        Debug.Log(currentBalance);
+        currentBalance += Mathf.Abs(amount);        
         if (onBalanceChange!= null)
         {
             onBalanceChange();
@@ -27,8 +43,7 @@ public class Bank : MonoBehaviour
 
     public void Withdraw(int amount)
     {
-        currentBalance -= Mathf.Abs(amount);
-        Debug.Log(currentBalance);
+        currentBalance -= Mathf.Abs(amount);        
         if (onBalanceChange != null)
         {
             onBalanceChange();

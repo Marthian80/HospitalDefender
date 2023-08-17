@@ -9,11 +9,13 @@ public class EnemyHealth : MonoBehaviour
 
     private Flash flash;
     private Enemy enemy;
+    private AudioPlayer audioPlayer;
     private int currentHitPoints = 0;
 
     private void Awake()
-    {     
-        enemy= GetComponent<Enemy>();
+    {
+        audioPlayer = FindObjectOfType<AudioPlayer>();
+        enemy = GetComponent<Enemy>();
         flash = GetComponent<Flash>();
     }
 
@@ -41,6 +43,7 @@ public class EnemyHealth : MonoBehaviour
         {
             Instantiate(deathVFX, transform.position, Quaternion.identity);
             enemy.RewardGold();
+            audioPlayer.PlayEnemyDeadClip();
             gameObject.SetActive(false);
         }
     }

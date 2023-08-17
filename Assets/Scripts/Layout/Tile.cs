@@ -9,18 +9,23 @@ public class Tile : MonoBehaviour
     [SerializeField] private bool isPlaceable;
     public bool IsPlaceable { get { return isPlaceable; } }
 
+    [SerializeField] private bool isWalkable;
+    public bool IsWalkable { get { return isWalkable; } }
+
     [SerializeField] private bool containsPatient;
     public bool ContainsPatient { get { return containsPatient; } }
 
     private Gridmanager gridManager;
     private Pathfinding pathFinder;
+    private AudioPlayer audioPlayer;        
     private Vector2Int coordinates = new Vector2Int();
     private bool buildTowerSelected = false;
 
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();  
-        pathFinder = FindObjectOfType<Pathfinding>();        
+        pathFinder = FindObjectOfType<Pathfinding>();
+        audioPlayer = FindObjectOfType<AudioPlayer>();
     }
 
     private void Start()
@@ -29,32 +34,38 @@ public class Tile : MonoBehaviour
         {
             coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
 
-            if (!isPlaceable)
+            if (!isWalkable)
             {
-                gridManager.BlockNode(coordinates);
-
-                if (containsPatient)    
-                {
-                    gridManager.SetNodeAsContainingPatient(coordinates);
-                }
+                gridManager.BlockNode(coordinates);                
             }
-            else
+            if (isPlaceable)
             {
                 buildMenu.onBuildTowerSelectionChanged += UpdateBuildSelection;
+            }
+
+            if (containsPatient)
+            {
+                gridManager.SetNodeAsContainingPatient(coordinates);
             }
         }
     }    
 
     private void OnMouseDown()
     {
-        if (gridManager.GetNode(coordinates).isWalkable && !pathFinder.WillBlockPath(coordinates) && buildTowerSelected)
+        if (isPlaceable && !pathFinder.WillBlockPath(coordinates) && buildTowerSelected)
         {
-            bool isSuccessfull = towerPrefab.CreateTower(towerPrefab, transform.position);
+            bool isSuccessfull = towerPrefab.CreateTower(towerPrefab, transform.position, audioPlayer);
             if (isSuccessfull)
             {
+                isPlaceable = false;
                 gridManager.BlockNode(coordinates);
                 pathFinder.NotifyReceivers();
             }
+        }
+        else
+        {
+            Debug.Log($"Is walkable {gridManager.GetNode(coordinates).isWalkable}");
+            Debug.Log($"Path blocked {!pathFinder.WillBlockPath(coordinates)}");
         }
     }
 

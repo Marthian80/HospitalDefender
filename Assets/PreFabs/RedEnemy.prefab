@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862dc81bd7b9bf843b31807b89027735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 1.25
 --- !u!95 &5273759159681994871
 Animator:
   serializedVersion: 4
@@ -146,6 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f6709699a505f47a6db67aff2c4e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldReward: 25
+  goldPenalty: 25
 --- !u!114 &-1442021561400207788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf468949905d5447afca9949f29dc5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 5
+  maxHitPoints: 3
   deathVFX: {fileID: 4693821815289999644, guid: 8ff935b18a652d946a1f99be8e35b6a2, type: 3}
 --- !u!114 &7845515856931252485
 MonoBehaviour:

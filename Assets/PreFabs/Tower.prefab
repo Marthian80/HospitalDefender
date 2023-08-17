@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 75
-  buildMenu: {fileID: 4937808204675312843, guid: 284d2ec0f6a713e4ba7378bec4872a95, type: 3}
 --- !u!210 &6757184850291261353
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -124,6 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed426b860598bf479cf044c039bfc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 2
+  range: 3
   bulletPreFab: {fileID: 6588291787700568518, guid: 79265f351d5afa84e8d08e19422cde0f, type: 3}
   attackCooldown: 1.5

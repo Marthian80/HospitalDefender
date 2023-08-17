@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862dc81bd7b9bf843b31807b89027735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.75
 --- !u!58 &5055266998021167205
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f6709699a505f47a6db67aff2c4e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldReward: 50
+  goldPenalty: 25
 --- !u!114 &-2455584172940844928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf468949905d5447afca9949f29dc5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 5
+  maxHitPoints: 6
   deathVFX: {fileID: 4693821815289999644, guid: d16c712af09d8b1498a922b86371fb74, type: 3}
 --- !u!114 &-7593496879444137479
 MonoBehaviour:

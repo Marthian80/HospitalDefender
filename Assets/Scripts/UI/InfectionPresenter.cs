@@ -10,6 +10,7 @@ public class InfectionPresenter : MonoBehaviour
 
     private void Start()
     {
+        infectionRateSlider.value = infectionRate.CurrentInfectedPatients;
         infectionRate.patientInfected += PatientInfected;
     }
 
