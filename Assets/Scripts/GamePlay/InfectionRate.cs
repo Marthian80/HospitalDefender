@@ -1,52 +1,43 @@
 using System;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
-public class InfectionRate : MonoBehaviour
+public class InfectionRate : Singleton<InfectionRate>
 {
     [SerializeField] private int allowedNumberofInfectedPatients = 5;
-
-    private static InfectionRate instance;
-    private LevelManager levelManager;
-    private AudioPlayer audioPlayer;
+        
     private int currentInfectedPatients = 0;
-    public int CurrentInfectedPatients { get { return instance.currentInfectedPatients; } }
+    public int CurrentInfectedPatients { get { return currentInfectedPatients; } }
 
-    public event Action<Vector2> patientInfected;
+    public event Action patientInfected;
 
-    private void Awake()
+    protected override void Awake()
     {
-        ManageSingleton();
-        levelManager = FindObjectOfType<LevelManager>();
-        audioPlayer = FindObjectOfType<AudioPlayer>();
+        base.Awake();        
     }
 
-    private void ManageSingleton()
+    public void ResetInfectedPatients()
     {
-        if (instance != null)
+        currentInfectedPatients = 0;
+        if (patientInfected != null)
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            patientInfected();
         }
     }
 
     public void InfectPatientAtLocation(Vector2 location)
     {
         currentInfectedPatients++;
-        audioPlayer.PlayPatientInfectedClip();
+        AudioPlayer.Instance.PlayPatientInfectedClip();
 
         if (patientInfected != null)
         {
-            patientInfected(location);
+            patientInfected();
         }
 
         if (currentInfectedPatients >= allowedNumberofInfectedPatients)
         {
-            levelManager.LoadGameOver();
+            LevelManager.Instance.LoadGameOver();
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BacteriaSpawner : MonoBehaviour
@@ -7,16 +6,17 @@ public class BacteriaSpawner : MonoBehaviour
     [SerializeField] private GameObject[] bacteria = new GameObject[4];
     [SerializeField][Range(0, 50)] private int poolSize = 4;
     [SerializeField][Range(0.1f, 30f)] private float spawnTimer = 6f;
-
-    private GameObject[] bacteriaPool;
+    
+    private GameObject[] bacteriaPool;    
 
     private void Awake()
-    {
+    {           
         PopulatePool();
     }
 
     private void Start()
     {
+        Timer.Instance.onFullMinutePassed += DecreaseSpawnTimer;
         StartCoroutine(SpawnEnemy());
     }
 
@@ -43,12 +43,17 @@ public class BacteriaSpawner : MonoBehaviour
         }
     }    
 
-    IEnumerator SpawnEnemy()
+    private IEnumerator SpawnEnemy()
     {
         while (Application.isPlaying)
         {
             EnableObjectInPool();
             yield return new WaitForSeconds(spawnTimer);
         }
+    }
+
+    private void DecreaseSpawnTimer()
+    {
+        spawnTimer = spawnTimer / 2;
     }
 }

@@ -3,17 +3,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private float sceneLoadDelay = 2f;
 
-    private AudioPlayer audioPlayer;
-
     public event Action onGameEnded;
 
-    private void Awake()
+    protected override void Awake()
     {
-        audioPlayer = FindObjectOfType<AudioPlayer>();
+        base.Awake();        
     }
 
     public void LoadGameOver()
@@ -28,30 +26,37 @@ public class LevelManager : MonoBehaviour
 
     public void LoadGame()
     {
-        audioPlayer.PlayGameMusic();
+        AudioPlayer.Instance.PlayButtonClickClip();
+        AudioPlayer.Instance.PlayGameMusic();
         SceneManager.LoadScene("LevelOne");
+        Timer.Instance.ResetTimer();
+        InfectionRate.Instance.ResetInfectedPatients();
+        Bank.Instance.ResetToStartingBalance();
     }
 
     public void LoadMainMenu()
     {
-        audioPlayer.PlayMenuMusic();
+        AudioPlayer.Instance.PlayButtonClickClip();
+        AudioPlayer.Instance.PlayMenuMusic();
         SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadInstructions()
     {
-        audioPlayer.PlayMenuMusic();
+        AudioPlayer.Instance.PlayButtonClickClip();
+        AudioPlayer.Instance.PlayMenuMusic();
         SceneManager.LoadScene("Instructions");
     }
 
     public void QuitGame()
     {
+        AudioPlayer.Instance.PlayButtonClickClip();
         Application.Quit();
     }
 
     private void GameEnded(bool gameLost)
     {
-        audioPlayer.PlayMenuMusic();
+        AudioPlayer.Instance.PlayMenuMusic();
 
         if (onGameEnded != null)
         {
@@ -59,17 +64,17 @@ public class LevelManager : MonoBehaviour
         }
         if (gameLost)
         {
-            audioPlayer.PlayGameEndClip(gameLost);            
+            AudioPlayer.Instance.PlayGameEndClip(gameLost);            
             StartCoroutine(WaitAndLoad("GameOver", sceneLoadDelay));
         }
         else
         {
-            audioPlayer.PlayGameEndClip(!gameLost);
+            AudioPlayer.Instance.PlayGameEndClip(!gameLost);
             StartCoroutine(WaitAndLoad("GameWon", sceneLoadDelay));
         }
     }
 
-    IEnumerator WaitAndLoad(string sceneName, float delay)
+    private IEnumerator WaitAndLoad(string sceneName, float delay)
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(sceneName);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AudioPlayer : MonoBehaviour
+public class AudioPlayer : Singleton<AudioPlayer>
 {
     [Header("BuildTower")]
     [SerializeField] private AudioClip buildTowerClip;
@@ -32,31 +32,18 @@ public class AudioPlayer : MonoBehaviour
     [SerializeField] private AudioClip menuMusicClip;
     [SerializeField] private AudioClip levelOneMusicClip;
 
-    private AudioSource audioSource;
-    private static AudioPlayer instance;
+    private AudioSource audioSource;    
 
-    private void Awake()
+    protected override void Awake()
     {
-        ManageSingleton();
-
-        audioSource = FindObjectOfType<AudioSource>();
-
-        //start game with menu music
-        PlayMenuMusic();
+        base.Awake();
+        audioSource = FindObjectOfType<AudioSource>();        
     }
 
-    private void ManageSingleton()
+    private void Start()
     {
-        if (instance != null)
-        {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        //start game with menu music
+        PlayMenuMusic();
     }
 
     public void PlayMenuMusic()

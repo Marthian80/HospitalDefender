@@ -651,17 +651,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d76207dcd071234fb5a370aa61b33d6, type: 3}
---- !u!114 &847574201 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4733409140071768532, guid: 7d76207dcd071234fb5a370aa61b33d6, type: 3}
-  m_PrefabInstance: {fileID: 847574200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98bf47d348f89f54d91dbf002e4a9ed8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &947140668 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7578999449580017725, guid: d5daa161a21743841b0674722cedc65a, type: 3}
@@ -1196,7 +1185,11 @@ PrefabInstance:
     - target: {fileID: 5432939835720210916, guid: 25eee07c0e6ab8b4d8a31fa25281d3d5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 847574201}
+      objectReference: {fileID: 4733409140071768532, guid: 7d76207dcd071234fb5a370aa61b33d6, type: 3}
+    - target: {fileID: 5432939835720210916, guid: 25eee07c0e6ab8b4d8a31fa25281d3d5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadGame
+      objectReference: {fileID: 0}
     - target: {fileID: 5432939835720210922, guid: 25eee07c0e6ab8b4d8a31fa25281d3d5, type: 3}
       propertyPath: m_Name
       value: RestartButton
@@ -1301,7 +1294,11 @@ PrefabInstance:
     - target: {fileID: 7578999449580017724, guid: d5daa161a21743841b0674722cedc65a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 847574201}
+      objectReference: {fileID: 4733409140071768532, guid: 7d76207dcd071234fb5a370aa61b33d6, type: 3}
+    - target: {fileID: 7578999449580017724, guid: d5daa161a21743841b0674722cedc65a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadMainMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 7578999449580017725, guid: d5daa161a21743841b0674722cedc65a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

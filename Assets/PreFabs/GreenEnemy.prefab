@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -3181819755436405609}
   - component: {fileID: 4792158265459974930}
   - component: {fileID: 6922807584219391899}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GreenEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f6709699a505f47a6db67aff2c4e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldReward: 25
+  goldPenalty: 25
 --- !u!114 &4792158265459974930
 MonoBehaviour:
   m_ObjectHideFlags: 0

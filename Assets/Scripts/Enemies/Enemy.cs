@@ -4,23 +4,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] int goldReward = 25;
     [SerializeField] int goldPenalty = 25;
-        
-    private Bank bank;    
-                
-    void Start()
-    {
-        bank = FindObjectOfType<Bank>();
-    }
 
     public void RewardGold()
-    {
-        if (bank == null) { return; }
-        bank.Deposit(goldReward);
+    {        
+        Bank.Instance.Deposit(goldReward);
     }
 
     public void StealGold()
     {
-        if (bank == null || bank.CurrentBalance <= 0) { return; }
-        bank.Withdraw(goldPenalty);
+        if (Bank.Instance.CurrentBalance <= 0) { return; }
+        Bank.Instance.Withdraw(goldPenalty);
     }
 }

@@ -1,65 +1,70 @@
 using System;
 using UnityEngine;
 
-public class Timer : MonoBehaviour
-{
-    private static Timer instance;
+public class Timer : Singleton<Timer>
+{    
     private bool timerStopped;
-
-    private LevelManager levelManager;
-    [SerializeField] private float timeToSurviveLevel = 180f;
-    public float CurrentTimeLeft { get { return instance.timeToSurviveLevel; } }
+        
+    [SerializeField] private float timeToSurviveLevel = 150f;
+    private float currentTimeLeft;
+    public float CurrentTimeLeft { get { return currentTimeLeft; } }
 
     public event Action onTimerChange;
+    public event Action onFullMinutePassed;
 
-    private void Awake()
+    protected override void Awake()
     {
-        ManageSingleton();
-        levelManager = FindObjectOfType<LevelManager>();
-        levelManager.onGameEnded += StopTimer;
-    }    
+        base.Awake();
+    }
+
+    private void Start()
+    {
+        currentTimeLeft = timeToSurviveLevel;
+        LevelManager.Instance.onGameEnded += StopTimer;
+    }
 
     private void Update()
     {
-        if (timeToSurviveLevel > 0 && !timerStopped)
+        if (currentTimeLeft > 0 && !timerStopped)
         {
             UpdateTimer();
         }        
     }
 
-    private void ManageSingleton()
+    public void StopTimer()
     {
-        if (instance != null)
+        timerStopped = true;
+    }
+
+    public void ResetTimer()
+    {
+        currentTimeLeft = timeToSurviveLevel;
+        timerStopped = false;
+        if (onTimerChange!= null) 
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            onTimerChange();
         }
     }
 
     private void UpdateTimer()
     {
-        var previousTime = timeToSurviveLevel;
+        var previousTime = currentTimeLeft;
 
-        timeToSurviveLevel -= Time.deltaTime;
+        currentTimeLeft -= Time.deltaTime;
 
-        if (previousTime != timeToSurviveLevel && onTimerChange != null)
+        if (previousTime != currentTimeLeft && onTimerChange != null)
         {
             onTimerChange();
         }
 
-        if (timeToSurviveLevel <= 0)
+        if (currentTimeLeft % 60 == 0 && onFullMinutePassed != null)
         {
-            levelManager.LoadLevelWon();
+            onFullMinutePassed();
         }
-    }
 
-    private void StopTimer()
-    {
-        timerStopped = true;
-    }
+        if (currentTimeLeft <= 0)
+        {
+            LevelManager.Instance.LoadLevelWon();
+        }
+    }    
 }

@@ -33,8 +33,8 @@ public class CoordinateLabeler : MonoBehaviour
             return;
         }
 
-        coordinates.x = Mathf.RoundToInt(transform.parent.position.x / UnityEditor.EditorSnapSettings.move.x);
-        coordinates.y = Mathf.RoundToInt(transform.parent.position.y / UnityEditor.EditorSnapSettings.move.y);
+        coordinates.x = Mathf.RoundToInt(transform.parent.position.x / gridManager.UnityGridSize);
+        coordinates.y = Mathf.RoundToInt(transform.parent.position.y / gridManager.UnityGridSize);
 
         label.text = coordinates.x + "," + coordinates.y;
     }

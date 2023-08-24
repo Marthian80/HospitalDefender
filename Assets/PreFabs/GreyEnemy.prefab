@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -6646827471805082529}
   - component: {fileID: -2455584172940844928}
   - component: {fileID: -7593496879444137479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GreyEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

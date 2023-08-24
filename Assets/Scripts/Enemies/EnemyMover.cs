@@ -10,15 +10,13 @@ public class EnemyMover : MonoBehaviour
     private List<Node> path = new List<Node>();
     private Gridmanager gridManager;
     private Pathfinding pathfinder;
-    private Enemy enemy;
-    private InfectionRate infectionRate;
+    private Enemy enemy;    
 
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();
         pathfinder = FindObjectOfType<Pathfinding>();
         enemy = FindObjectOfType<Enemy>();
-        infectionRate = FindObjectOfType<InfectionRate>();
 
         //Activate event listener
         EventManager.StartListening("RecalculatePath", RecalculatePath);
@@ -62,7 +60,7 @@ public class EnemyMover : MonoBehaviour
                 
         if (CheckForPatientToInfect(position))
         {
-            infectionRate.InfectPatientAtLocation(position);
+            InfectionRate.Instance.InfectPatientAtLocation(position);
             enemy.StealGold();
         }
     }

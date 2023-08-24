@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Flash : MonoBehaviour
 {
     [SerializeField] private Material whiteFlashMat;
     [SerializeField] private float restoreDefaultMatTime = 0.2f;
+    [SerializeField] private float fadeTime = 0.75f;
 
     private Material defaultMat;
     private SpriteRenderer spriteRenderer;
@@ -13,6 +13,11 @@ public class Flash : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
+
         defaultMat = spriteRenderer.material;
     }
 
@@ -26,5 +31,32 @@ public class Flash : MonoBehaviour
         spriteRenderer.material = whiteFlashMat;
         yield return new WaitForSeconds(restoreDefaultMatTime);
         spriteRenderer.material = defaultMat;
+    }
+
+    public IEnumerator SlowFlashRoutine(SpriteRenderer externalSpriteRenderer)
+    {
+        float elapsedTime;
+        float startValue = externalSpriteRenderer.material.color.a;
+        var color = externalSpriteRenderer.color;
+
+        while (true)
+        {
+            elapsedTime = 0;
+            while (elapsedTime < fadeTime)
+            {
+                elapsedTime += Time.deltaTime;
+                float newAlpha = Mathf.Lerp(startValue, 0f, elapsedTime / fadeTime);
+                externalSpriteRenderer.color = new Color(color.r, color.b, color.g, newAlpha);
+                yield return null;
+            }
+            elapsedTime = 0;
+            while (elapsedTime < fadeTime)
+            {
+                elapsedTime += Time.deltaTime;
+                float newAlpha = Mathf.Lerp(0f, startValue, elapsedTime / fadeTime);
+                externalSpriteRenderer.color = new Color(color.r, color.b, color.g, newAlpha);
+                yield return null;
+            }
+        }
     }
 }

@@ -15,16 +15,9 @@ public class BuildMenuPresenter : MonoBehaviour
 
     public event Action<bool> onBuildTowerSelectionChanged;
 
-    private int? currentSelection = null;
-    private AudioPlayer audioPlayer;
+    private int? currentSelection = null;    
 
     private const int BUILDTOWERBUTTON = 0;
-
-
-    private void Awake()
-    {
-        audioPlayer = FindObjectOfType<AudioPlayer>();
-    }
 
     private void Start()
     {
@@ -45,7 +38,7 @@ public class BuildMenuPresenter : MonoBehaviour
     {
         currentSelection = index;
         SetButtonState(index);
-        audioPlayer.PlayButtonClickClip();
+        AudioPlayer.Instance.PlayButtonClickClip();
         NotifyListeners();
     }
 

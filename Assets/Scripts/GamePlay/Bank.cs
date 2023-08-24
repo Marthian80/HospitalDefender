@@ -1,34 +1,27 @@
 using System;
 using UnityEngine;
 
-public class Bank : MonoBehaviour
+public class Bank : Singleton<Bank>
 {
-    private static Bank instance;
-
     [SerializeField] private int startingBalance = 150;
 
     [SerializeField] private int currentBalance;
-    public int CurrentBalance { get { return instance.currentBalance; } }
+    public int CurrentBalance { get { return currentBalance; } }
 
     public event Action onBalanceChange;
 
-    private void Awake()
+    protected override void Awake()
     {
-        ManageSingleton();
+        base.Awake();        
         currentBalance = startingBalance;
     }
 
-    private void ManageSingleton()
+    public void ResetToStartingBalance()
     {
-        if (instance != null)
+        currentBalance = startingBalance;
+        if (onBalanceChange != null)
         {
-            gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            onBalanceChange();
         }
     }
 

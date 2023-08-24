@@ -8,13 +8,11 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private GameObject deathVFX;
 
     private Flash flash;
-    private Enemy enemy;
-    private AudioPlayer audioPlayer;
+    private Enemy enemy;    
     private int currentHitPoints = 0;
 
     private void Awake()
-    {
-        audioPlayer = FindObjectOfType<AudioPlayer>();
+    {   
         enemy = GetComponent<Enemy>();
         flash = GetComponent<Flash>();
     }
@@ -43,7 +41,7 @@ public class EnemyHealth : MonoBehaviour
         {
             Instantiate(deathVFX, transform.position, Quaternion.identity);
             enemy.RewardGold();
-            audioPlayer.PlayEnemyDeadClip();
+            AudioPlayer.Instance.PlayEnemyDeadClip();
             gameObject.SetActive(false);
         }
     }

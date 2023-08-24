@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoapBullet : MonoBehaviour
 {
-    [SerializeField] private float projectileRange = 15f;
-    [SerializeField] private float moveSpeed = 15f;
+    [SerializeField] private float projectileRange = 8f;
+    [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private GameObject particleOnHitVFX;
     
     private Vector3 startPosition;
@@ -26,14 +24,18 @@ public class SoapBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-        //Indestructable indestructable = collision.gameObject.GetComponent<Indestructable>();
+        Indestructable indestructable = collision.gameObject.GetComponent<Indestructable>();
 
-        if (!collision.isTrigger && (enemyHealth)) //|| indestructable)
+        if (!collision.isTrigger && (enemyHealth || indestructable))
         {
             if (enemyHealth)
             {
                 ProjectileHitDetected();
                 enemyHealth.TakeDamage(1);
+            }
+            else if (!collision.isTrigger && indestructable)
+            {
+                ProjectileHitDetected();
             }
         }
     }
@@ -48,13 +50,12 @@ public class SoapBullet : MonoBehaviour
 
     private void MoveProjectile()
     {
-        transform.position = Vector2.MoveTowards(transform.position, Target.position, moveSpeed * Time.deltaTime);
-        //transform.Translate(Target.position * moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, Target.position, moveSpeed * Time.deltaTime);        
     }
 
     private void ProjectileHitDetected()
     {
-        //Instantiate(particleOnHitVFX, transform.position, transform.rotation);
+        Instantiate(particleOnHitVFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
