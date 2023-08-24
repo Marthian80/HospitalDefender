@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1603043438768775418}
   - component: {fileID: 3224848615853483033}
   - component: {fileID: 3400212785587000101}
-  - component: {fileID: 3815237488689479028}
   m_Layer: 7
   m_Name: PlantTwo
   m_TagString: Untagged
@@ -102,15 +101,3 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0049913228, y: 0.021629214}
   m_Size: {x: 0.5366033, y: 1.5490501}
   m_Direction: 0
---- !u!114 &3815237488689479028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7740559812221338552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0092d27d6ae0b5478c685ac8266a023, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

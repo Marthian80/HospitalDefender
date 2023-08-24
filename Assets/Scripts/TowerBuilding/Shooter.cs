@@ -47,7 +47,7 @@ public class Shooter : MonoBehaviour
         if (targetDistance <= range && canAttack)
         {
             canAttack = false;
-            var newSoapBullet = Instantiate(bulletPreFab, gameObject.transform.position, quaternion.Euler(0, 0, -targetAngle));
+            var newSoapBullet = Instantiate(bulletPreFab, gameObject.transform.position, quaternion.Euler(0, 0, targetDirection.x < 0 ? targetAngle : -targetAngle));
             newSoapBullet.GetComponent<SoapBullet>().Target = target;
             AudioPlayer.Instance.PlayShootSoapClip();
             StartCoroutine(AttackCoolDownRoutine());                       

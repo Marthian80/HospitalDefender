@@ -3957,8 +3957,8 @@ MonoBehaviour:
   bacteria:
   - {fileID: 3463106240071098065, guid: 4647ac217e9345c428c46549d180508c, type: 3}
   - {fileID: 5960183997682874367, guid: ba26fc25dc25aad4fa752211a034ed72, type: 3}
-  poolSize: 3
-  spawnTimer: 6
+  poolSize: 2
+  spawnTimer: 7.5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -7544,7 +7544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3224848615853483033, guid: 764a4145014995c46aba38c1e832d917, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7740559812221338552, guid: 764a4145014995c46aba38c1e832d917, type: 3}
       propertyPath: m_Name
