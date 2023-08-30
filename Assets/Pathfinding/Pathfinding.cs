@@ -5,11 +5,11 @@ public class Pathfinding : MonoBehaviour
 {
     [SerializeField] private List<Vector2Int> startCoordinates = new List<Vector2Int>();
     [SerializeField] private List<Vector2Int> destinationCoordinates = new List<Vector2Int>();
+    [SerializeField] private List<Vector2Int> tankCoordinates = new List<Vector2Int>();
 
     private Vector2Int currentStartCoordinates;
     public Vector2Int CurrentStartCoordinates { get { return currentStartCoordinates; } }   
-    private Vector2Int currentDestinationCoordinates;
-    public Vector2Int CurrentDestinationCoordinates { get { return currentDestinationCoordinates; } }
+    private Vector2Int currentDestinationCoordinates;    
 
     private Node startNode;
     private Node destinationNode;
@@ -50,6 +50,18 @@ public class Pathfinding : MonoBehaviour
     {
         currentDestinationCoordinates = destinationCoordinates[Random.Range(0, destinationCoordinates.Count)];
         destinationNode = grid[currentDestinationCoordinates];
+    }
+
+    public void SetRandomTankDestinationPosition()
+    {
+        currentDestinationCoordinates = tankCoordinates[Random.Range(0, tankCoordinates.Count)];
+        destinationNode = grid[currentDestinationCoordinates];
+    }
+
+    public void SetStartPositionOnTheseCoordinates(Vector2Int startCoordinates)
+    {
+        currentStartCoordinates = startCoordinates;
+        startNode = grid[currentStartCoordinates];
     }
 
     public List<Node> GetNewPath()

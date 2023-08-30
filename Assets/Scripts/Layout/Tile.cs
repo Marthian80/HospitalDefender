@@ -1,34 +1,49 @@
-using System.Collections;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
     [SerializeField] private Tower towerPrefab;
+    [SerializeField] private Poster posterPrefab;    
+    [SerializeField] private Tank tankPrefab;
     [SerializeField] private BuildMenuPresenter buildMenu;
 
     [SerializeField] private bool isPlaceable;
     public bool IsPlaceable { get { return isPlaceable; } }
+
+    [SerializeField] private bool isSuitableForPoster;
 
     [SerializeField] private bool isWalkable;
     public bool IsWalkable { get { return isWalkable; } }
 
     [SerializeField] private bool containsPatient;
     public bool ContainsPatient { get { return containsPatient; } }
-    
+
+    public bool SlowEnemies { get; private set; }
+
     private Gridmanager gridManager;
     private Pathfinding pathFinder;    
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRendererTower;
+    private SpriteRenderer spriteRendererPoster;
+    private SpriteRenderer spriteRendererTank;
+
     private Flash flash;
     private Vector2Int coordinates = new Vector2Int();
     private bool buildTowerSelected = false;
-
+    private bool buildPosterSeleted = false;  
+    private bool buildTankSelected = false;
+    
     private const string TowerBuildPreview = "TowerBuildPreview";
+    private const string PosterBuildPreview = "PosterBuildPreview";
+    private const string TankBuildPreview = "TankBuildPreview";
+
 
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();  
         pathFinder = FindObjectOfType<Pathfinding>();        
-        spriteRenderer = transform.Find(TowerBuildPreview).GetComponent<SpriteRenderer>();
+        spriteRendererTower = transform.Find(TowerBuildPreview).GetComponent<SpriteRenderer>();
+        spriteRendererPoster = transform.Find(PosterBuildPreview).GetComponent<SpriteRenderer>();
+        spriteRendererTank = transform.Find(TankBuildPreview).GetComponent<SpriteRenderer>();
         flash = GetComponent<Flash>();
 
         if (gridManager != null)
@@ -47,10 +62,14 @@ public class Tile : MonoBehaviour
     }
 
     private void Start()
-    {
-        if (isPlaceable)
+    {   
+        if (isSuitableForPoster || isPlaceable)
         {
-            buildMenu.onBuildTowerSelectionChanged += UpdateBuildSelection;
+            buildMenu.onBuildingSelectionChanged += UpdateBuildSelection;
+        }
+        if (isWalkable)
+        {
+            posterPrefab.onPosterBuildAtlocation += ApplySlowness;
         }
     }    
 
@@ -64,10 +83,16 @@ public class Tile : MonoBehaviour
             pathFinder.NotifyReceivers();
             StopShowBuildSpacePreview();
         }
-        else
+        else if (isSuitableForPoster && buildPosterSeleted && Bank.Instance.CurrentBalance >= posterPrefab.Cost)
         {
-            Debug.Log($"Is walkable {gridManager.GetNode(coordinates).isWalkable}");
-            Debug.Log($"Path blocked {!pathFinder.WillBlockPath(coordinates)}");
+            posterPrefab.CreatePoster(posterPrefab, transform.position);
+            isSuitableForPoster = false;
+            StopShowBuildSpacePreview();
+        }
+        else if (isPlaceable && !pathFinder.WillBlockPath(coordinates) && buildTankSelected && Bank.Instance.CurrentBalance >= tankPrefab.Cost)
+        {
+            TankActivator.Instance.ActivateTank(transform.position);
+            StopShowBuildSpacePreview();
         }
     }
 
@@ -75,28 +100,50 @@ public class Tile : MonoBehaviour
     {
         if (isPlaceable && !pathFinder.WillBlockPath(coordinates) && buildTowerSelected && Bank.Instance.CurrentBalance >= towerPrefab.Cost)
         {            
-            ShowBuildSpacePreview();
+            ShowBuildSpacePreview(spriteRendererTower);
+        }
+        if (isPlaceable && !pathFinder.WillBlockPath(coordinates) && buildTankSelected && Bank.Instance.CurrentBalance >= tankPrefab.Cost)
+        {
+            ShowBuildSpacePreview(spriteRendererTank);
+        }
+        else if (isSuitableForPoster && buildPosterSeleted && Bank.Instance.CurrentBalance >= posterPrefab.Cost)
+        {
+            ShowBuildSpacePreview(spriteRendererPoster);
         }
     }
 
     private void OnMouseExit()
     {
-        if(spriteRenderer.enabled)
+        if(spriteRendererTower.enabled || spriteRendererPoster.enabled || spriteRendererTank.enabled)
         {
             StopShowBuildSpacePreview();
         }
     }    
 
-    private void UpdateBuildSelection(bool selectionState)
+    private void UpdateBuildSelection(int? selectionState)
     {
-        buildTowerSelected = selectionState;
-        if (!selectionState)
+        buildPosterSeleted = false;
+        buildTowerSelected = false;
+        buildTankSelected = false;
+
+        switch (selectionState)
         {
-            StopShowBuildSpacePreview();
+            case (int)GlobalEnums.Buildings.Poster:
+                buildPosterSeleted = true;
+                break;
+            case (int)GlobalEnums.Buildings.Tower:
+                buildTowerSelected = true;
+                break;
+            case (int)GlobalEnums.Buildings.Tank:
+                buildTankSelected = true;
+                break;
+            default:
+                StopShowBuildSpacePreview();
+                break;
         }
     }  
     
-    private void ShowBuildSpacePreview()
+    private void ShowBuildSpacePreview(SpriteRenderer spriteRenderer)
     {
         if (spriteRenderer != null && !spriteRenderer.enabled)
         {
@@ -108,7 +155,21 @@ public class Tile : MonoBehaviour
     private void StopShowBuildSpacePreview()
     {
         StopAllCoroutines();        
-        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.b, spriteRenderer.color.g, 1f);
-        spriteRenderer.enabled = false;
+        spriteRendererTower.color = new Color(spriteRendererTower.color.r, spriteRendererTower.color.b, spriteRendererTower.color.g, 1f);
+        spriteRendererTower.enabled = false;
+        spriteRendererPoster.color = new Color(spriteRendererPoster.color.r, spriteRendererPoster.color.b, spriteRendererPoster.color.g, 1f);
+        spriteRendererPoster.enabled = false;
+        spriteRendererTank.color = new Color(spriteRendererTank.color.r, spriteRendererTank.color.b, spriteRendererTank.color.g, 1f);
+        spriteRendererTank.enabled = false;
+
+    }
+
+    private void ApplySlowness(Vector2 slownessEffectCoordinates)
+    {
+        if (coordinates.x == (int)slownessEffectCoordinates.x && coordinates.y == (int)slownessEffectCoordinates.y)
+        {
+            //Debug.Log($"Slow set on X: {coordinates.x}, Y {coordinates.y}");
+            SlowEnemies = true;
+        }
     }
 }

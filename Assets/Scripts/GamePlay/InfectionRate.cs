@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 public class InfectionRate : Singleton<InfectionRate>
 {

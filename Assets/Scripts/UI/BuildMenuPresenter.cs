@@ -7,73 +7,68 @@ public class BuildMenuPresenter : MonoBehaviour
 {
     [SerializeField] private GameObject[] buildButtons;
     [SerializeField] private Tower tower;
+    [SerializeField] private Poster poster;
+    [SerializeField] private Tank tank;
 
     [SerializeField] private Sprite defaultBuildSprite;
     [SerializeField] private Sprite selectedBuildSprite;
 
     [SerializeField] private TextMeshProUGUI displayTowerCost;
+    [SerializeField] private TextMeshProUGUI displayPosterCost;
+    [SerializeField] private TextMeshProUGUI displayTankCost;
 
-    public event Action<bool> onBuildTowerSelectionChanged;
-
-    private int? currentSelection = null;    
-
-    private const int BUILDTOWERBUTTON = 0;
+    public event Action<int?> onBuildingSelectionChanged;    
 
     private void Start()
     {
         displayTowerCost.text = "$ " + tower.Cost;
+        displayPosterCost.text = "$ " + poster.Cost;
+        displayTankCost.text = "$ " + tank.Cost;
     }
 
     private void Update()
     {
         if (Input.GetMouseButton(1))
         {
-            currentSelection = null;
-            SetButtonState(currentSelection, true);
-            NotifyListeners();
+            DeselectAllButtons();
+            NotifyListeners(null);
         }
     }
 
     public void OnBuildingSelected(int index)
-    {
-        currentSelection = index;
+    {        
+        DeselectAllButtons();
         SetButtonState(index);
         AudioPlayer.Instance.PlayButtonClickClip();
-        NotifyListeners();
+        NotifyListeners(index);
     }
 
-    private void SetButtonState(int? index, bool setAlltrue = false)
+    private void SetButtonState(int index, bool setAlltrue = false)
     {
-        for (int i = 0; i < buildButtons.Length; i++)
-        {
-            Button button = buildButtons[i].GetComponent<Button>();
-            Image buttonImage = buildButtons[i].GetComponent<Image>();
+        Button button = buildButtons[index].GetComponent<Button>();
+        Image buttonImage = buildButtons[index].GetComponent<Image>();
 
-            if (i == index && !setAlltrue)
-            {
-                button.interactable = false;
-                buttonImage.sprite = selectedBuildSprite;
-            }
-            else
-            {
-                button.interactable = true;
-                buttonImage.sprite = defaultBuildSprite;
-            }
+        button.interactable = false;
+        buttonImage.sprite = selectedBuildSprite;       
+    }
+
+    private void DeselectAllButtons()
+    {
+        foreach(var buttonGameObject in buildButtons)
+        {
+            Button button = buttonGameObject.GetComponent<Button>();
+            Image buttonImage = buttonGameObject.GetComponent<Image>();
+
+            button.interactable = true;
+            buttonImage.sprite = defaultBuildSprite;
         }
     }
 
-    private void NotifyListeners()
+    private void NotifyListeners(int? index)
     {
-        if (onBuildTowerSelectionChanged != null)
-        {
-            if (currentSelection == BUILDTOWERBUTTON)
-            {
-                onBuildTowerSelectionChanged(true);
-            }
-            else
-            {
-                onBuildTowerSelectionChanged(false);
-            }
+        if (onBuildingSelectionChanged != null)
+        {   
+            onBuildingSelectionChanged(index);            
         }
     }
 }

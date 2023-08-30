@@ -10,7 +10,9 @@ public class EnemyMover : MonoBehaviour
     private List<Node> path = new List<Node>();
     private Gridmanager gridManager;
     private Pathfinding pathfinder;
-    private Enemy enemy;    
+    private Enemy enemy;
+
+    private bool slownessTriggered = false;
 
     private void Awake()
     {
@@ -26,7 +28,24 @@ public class EnemyMover : MonoBehaviour
     {
         ReturnToStart();
         RecalculatePath(true);
-    }       
+        slownessTriggered = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Tile tile = collision.gameObject.GetComponent<Tile>();
+        if (tile && tile.SlowEnemies)
+        {
+            slownessTriggered = true;
+            speed = speed / 2;
+        }
+        else if (tile && !tile.SlowEnemies && slownessTriggered)
+        {
+            slownessTriggered = false;
+            speed = speed * 2;
+        }
+    }
+
 
     private void ReturnToStart()
     {

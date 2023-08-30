@@ -6,6 +6,14 @@ public class AudioPlayer : Singleton<AudioPlayer>
     [SerializeField] private AudioClip buildTowerClip;
     [SerializeField][Range(0f, 1f)] private float buildTowerVolume = 1.0f;
 
+    [Header("BuildPoster")]
+    [SerializeField] private AudioClip buildPosterClip;
+    [SerializeField][Range(0f, 1f)] private float buildPosterVolume = 1.0f;
+
+    [Header("BuildTank")]
+    [SerializeField] private AudioClip buildTankClip;
+    [SerializeField][Range(0f, 1f)] private float buildTankVolume = 1.0f;
+
     [Header("Button")]
     [SerializeField] private AudioClip buttonClickClip;
     [SerializeField][Range(0f, 1f)] private float buttonClickVolume = 1.0f;
@@ -73,6 +81,22 @@ public class AudioPlayer : Singleton<AudioPlayer>
         if (buildTowerClip != null)
         {
             AudioSource.PlayClipAtPoint(buildTowerClip, Camera.main.transform.position, buildTowerVolume);
+        }
+    }
+
+    public void PlayBuildPosterClip()
+    {
+        if (buildPosterClip != null)
+        {
+            AudioSource.PlayClipAtPoint(buildPosterClip, Camera.main.transform.position, buildPosterVolume);
+        }
+    }
+
+    public void PlayBuildTankClip()
+    {
+        if (buildTankClip != null)
+        {
+            AudioSource.PlayClipAtPoint(buildTankClip, Camera.main.transform.position, buildTankVolume);
         }
     }
 
