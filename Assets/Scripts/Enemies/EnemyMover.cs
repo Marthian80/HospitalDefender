@@ -22,6 +22,7 @@ public class EnemyMover : MonoBehaviour
 
         //Activate event listener
         EventManager.StartListening("RecalculatePath", RecalculatePath);
+        Timer.Instance.onTimerStopped += TimerStopped;
     }
 
     private void OnEnable()
@@ -29,6 +30,11 @@ public class EnemyMover : MonoBehaviour
         ReturnToStart();
         RecalculatePath(true);
         slownessTriggered = false;
+    }
+
+    private void OnDestroy()
+    {
+        Timer.Instance.onTimerStopped -= TimerStopped;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -111,5 +117,10 @@ public class EnemyMover : MonoBehaviour
             }
         }
         FinishPath(endPosition);
+    }
+
+    private void TimerStopped()
+    {
+        StopAllCoroutines();
     }
 }

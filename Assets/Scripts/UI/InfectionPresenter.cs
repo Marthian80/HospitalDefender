@@ -7,6 +7,7 @@ public class InfectionPresenter : MonoBehaviour
 
     private void Start()
     {
+        infectionRateSlider.maxValue = InfectionRate.Instance.AllowedNumberOfInfectedPatients;
         infectionRateSlider.value = InfectionRate.Instance.CurrentInfectedPatients;
         InfectionRate.Instance.patientInfected += PatientInfected;
     }

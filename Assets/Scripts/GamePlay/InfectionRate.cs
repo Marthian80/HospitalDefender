@@ -4,6 +4,7 @@ using UnityEngine;
 public class InfectionRate : Singleton<InfectionRate>
 {
     [SerializeField] private int allowedNumberofInfectedPatients = 5;
+    public int AllowedNumberOfInfectedPatients { get; private set; }
         
     private int currentInfectedPatients = 0;
     public int CurrentInfectedPatients { get { return currentInfectedPatients; } }
@@ -12,12 +13,14 @@ public class InfectionRate : Singleton<InfectionRate>
 
     protected override void Awake()
     {
-        base.Awake();        
+        base.Awake();
+        AllowedNumberOfInfectedPatients = allowedNumberofInfectedPatients;
     }
 
     public void ResetInfectedPatients()
     {
         currentInfectedPatients = 0;
+        AllowedNumberOfInfectedPatients = allowedNumberofInfectedPatients;
         if (patientInfected != null)
         {
             patientInfected();

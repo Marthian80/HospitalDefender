@@ -37,6 +37,10 @@ public class SoapBullet : MonoBehaviour
             {
                 ProjectileHitDetected();
             }
+            else
+            {
+                Destroy(gameObject, 3);
+            }
         }
     }
 
@@ -58,4 +62,6 @@ public class SoapBullet : MonoBehaviour
         Instantiate(particleOnHitVFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
+
+    
 }

@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf468949905d5447afca9949f29dc5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 6
+  maxHitPoints: 8
   deathVFX: {fileID: 4693821815289999644, guid: d16c712af09d8b1498a922b86371fb74, type: 3}
 --- !u!114 &-7593496879444137479
 MonoBehaviour:
@@ -215,3 +215,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whiteFlashMat: {fileID: 2100000, guid: a8996c6a317aac44e93dcc049d5ea809, type: 2}
   restoreDefaultMatTime: 0.1
+  fadeTime: 0.4

@@ -2,15 +2,13 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] private Tower towerPrefab;
-    [SerializeField] private Poster posterPrefab;    
+    [SerializeField] private Tower towerPrefab;      
     [SerializeField] private Tank tankPrefab;
+    [SerializeField] private Poster posterPrefab;
     [SerializeField] private BuildMenuPresenter buildMenu;
 
     [SerializeField] private bool isPlaceable;
-    public bool IsPlaceable { get { return isPlaceable; } }
-
-    [SerializeField] private bool isSuitableForPoster;
+    public bool IsPlaceable { get { return isPlaceable; } }    
 
     [SerializeField] private bool isWalkable;
     public bool IsWalkable { get { return isWalkable; } }
@@ -22,18 +20,15 @@ public class Tile : MonoBehaviour
 
     private Gridmanager gridManager;
     private Pathfinding pathFinder;    
-    private SpriteRenderer spriteRendererTower;
-    private SpriteRenderer spriteRendererPoster;
+    private SpriteRenderer spriteRendererTower;    
     private SpriteRenderer spriteRendererTank;
 
     private Flash flash;
     private Vector2Int coordinates = new Vector2Int();
-    private bool buildTowerSelected = false;
-    private bool buildPosterSeleted = false;  
+    private bool buildTowerSelected = false;      
     private bool buildTankSelected = false;
     
-    private const string TowerBuildPreview = "TowerBuildPreview";
-    private const string PosterBuildPreview = "PosterBuildPreview";
+    private const string TowerBuildPreview = "TowerBuildPreview";    
     private const string TankBuildPreview = "TankBuildPreview";
 
 
@@ -41,8 +36,7 @@ public class Tile : MonoBehaviour
     {
         gridManager = FindObjectOfType<Gridmanager>();  
         pathFinder = FindObjectOfType<Pathfinding>();        
-        spriteRendererTower = transform.Find(TowerBuildPreview).GetComponent<SpriteRenderer>();
-        spriteRendererPoster = transform.Find(PosterBuildPreview).GetComponent<SpriteRenderer>();
+        spriteRendererTower = transform.Find(TowerBuildPreview).GetComponent<SpriteRenderer>();        
         spriteRendererTank = transform.Find(TankBuildPreview).GetComponent<SpriteRenderer>();
         flash = GetComponent<Flash>();
 
@@ -63,7 +57,7 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {   
-        if (isSuitableForPoster || isPlaceable)
+        if (isPlaceable)
         {
             buildMenu.onBuildingSelectionChanged += UpdateBuildSelection;
         }
@@ -83,12 +77,6 @@ public class Tile : MonoBehaviour
             pathFinder.NotifyReceivers();
             StopShowBuildSpacePreview();
         }
-        else if (isSuitableForPoster && buildPosterSeleted && Bank.Instance.CurrentBalance >= posterPrefab.Cost)
-        {
-            posterPrefab.CreatePoster(posterPrefab, transform.position);
-            isSuitableForPoster = false;
-            StopShowBuildSpacePreview();
-        }
         else if (isPlaceable && !pathFinder.WillBlockPath(coordinates) && buildTankSelected && Bank.Instance.CurrentBalance >= tankPrefab.Cost)
         {
             TankActivator.Instance.ActivateTank(transform.position);
@@ -106,31 +94,23 @@ public class Tile : MonoBehaviour
         {
             ShowBuildSpacePreview(spriteRendererTank);
         }
-        else if (isSuitableForPoster && buildPosterSeleted && Bank.Instance.CurrentBalance >= posterPrefab.Cost)
-        {
-            ShowBuildSpacePreview(spriteRendererPoster);
-        }
     }
 
     private void OnMouseExit()
     {
-        if(spriteRendererTower.enabled || spriteRendererPoster.enabled || spriteRendererTank.enabled)
+        if(spriteRendererTower.enabled || spriteRendererTank.enabled)
         {
             StopShowBuildSpacePreview();
         }
     }    
 
     private void UpdateBuildSelection(int? selectionState)
-    {
-        buildPosterSeleted = false;
+    {        
         buildTowerSelected = false;
         buildTankSelected = false;
 
         switch (selectionState)
-        {
-            case (int)GlobalEnums.Buildings.Poster:
-                buildPosterSeleted = true;
-                break;
+        {            
             case (int)GlobalEnums.Buildings.Tower:
                 buildTowerSelected = true;
                 break;
@@ -157,8 +137,6 @@ public class Tile : MonoBehaviour
         StopAllCoroutines();        
         spriteRendererTower.color = new Color(spriteRendererTower.color.r, spriteRendererTower.color.b, spriteRendererTower.color.g, 1f);
         spriteRendererTower.enabled = false;
-        spriteRendererPoster.color = new Color(spriteRendererPoster.color.r, spriteRendererPoster.color.b, spriteRendererPoster.color.g, 1f);
-        spriteRendererPoster.enabled = false;
         spriteRendererTank.color = new Color(spriteRendererTank.color.r, spriteRendererTank.color.b, spriteRendererTank.color.g, 1f);
         spriteRendererTank.enabled = false;
 
@@ -168,7 +146,7 @@ public class Tile : MonoBehaviour
     {
         if (coordinates.x == (int)slownessEffectCoordinates.x && coordinates.y == (int)slownessEffectCoordinates.y)
         {
-            //Debug.Log($"Slow set on X: {coordinates.x}, Y {coordinates.y}");
+            Debug.Log($"Slow set on X: {coordinates.x}, Y {coordinates.y}");
             SlowEnemies = true;
         }
     }

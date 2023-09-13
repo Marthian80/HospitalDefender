@@ -5,40 +5,62 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    [SerializeField] private float sceneLoadDelay = 2f;
+    [SerializeField] private float sceneLoadDelay = 1f;
+    [SerializeField] private int numberOfLevelsInGame = 3;
 
     public event Action onGameEnded;
+    public event Action<int> onLevelFinished;
 
     protected override void Awake()
     {
-        base.Awake();        
+        base.Awake();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
+    {        
+        if (loadedScene.name.Contains("Level"))
+        {
+            ResetGameData();
+            if (loadedScene.name == "Level1")
+            {
+                Timer.Instance.SetTime(GlobalGameData.timeLevelOne);
+            }
+            else if (loadedScene.name == "Level2")
+            {
+                Timer.Instance.SetTime(GlobalGameData.timeLevelTwo);
+            }
+            else if (loadedScene.name == "Level3")
+            {
+                Timer.Instance.SetTime(GlobalGameData.timeLevelThree);
+            }
+        }
     }
 
     public void LoadGameOver()
-    {
-        GameEnded(true);        
+    {        
+        GameEnded(true);
+        //ResetGameData();
     }
 
     public void LoadLevelWon()
-    {
-        GameEnded(false);        
+    {        
+        GameEnded(false);
+        //ResetGameData();
     }
 
     public void LoadGame()
-    {
+    {        
         AudioPlayer.Instance.PlayButtonClickClip();
         AudioPlayer.Instance.PlayGameMusic();
-        SceneManager.LoadScene("LevelOne");
-        Timer.Instance.ResetTimer();
-        InfectionRate.Instance.ResetInfectedPatients();
-        Bank.Instance.ResetToStartingBalance();
+        SceneManager.LoadScene("Level1");
     }
 
     public void LoadMainMenu()
-    {
+    {        
         AudioPlayer.Instance.PlayButtonClickClip();
         AudioPlayer.Instance.PlayMenuMusic();
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");        
     }
 
     public void LoadInstructions()
@@ -54,8 +76,34 @@ public class LevelManager : Singleton<LevelManager>
         Application.Quit();
     }
 
+    public void LoadLevel(int sceneIndex)
+    {       
+        StartCoroutine(WaitAndLoad("Level" + sceneIndex, sceneLoadDelay));
+        //ResetGameData();
+    }
+
+    public void FinishedLevel()
+    {        
+        var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        if (currentSceneIndex == numberOfLevelsInGame)
+        {
+            GameEnded(false);
+        }
+        else
+        {
+            if (onLevelFinished != null)
+            {
+                onLevelFinished(currentSceneIndex);
+            }
+            else
+            {
+                LoadMainMenu();
+            }
+        }
+    }
+
     private void GameEnded(bool gameLost)
-    {
+    {        
         AudioPlayer.Instance.PlayMenuMusic();
 
         if (onGameEnded != null)
@@ -78,5 +126,12 @@ public class LevelManager : Singleton<LevelManager>
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(sceneName);
+    }
+
+    private void ResetGameData()
+    {
+        Timer.Instance.ResetTimer();
+        InfectionRate.Instance.ResetInfectedPatients();
+        Bank.Instance.ResetToStartingBalance();
     }
 }

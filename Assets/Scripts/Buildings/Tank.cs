@@ -19,17 +19,24 @@ public class Tank : MonoBehaviour
 
     private bool tankRotatedHorizontal = true;
 
-    private const string horizontalTankSprite = "HorizontalTank";
-    private const string verticalTankSprite = "VerticalTank";
-
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();
         pathfinder = FindObjectOfType<Pathfinding>();
-        
+        spriteRendererTankHorizontal = transform.GetComponent<SpriteRenderer>();
+
+        var test = transform.Find("TankVertical");
+        spriteRendererTankVertical = test.GetComponent<SpriteRenderer>();
+
         TankActivator.Instance.onTankBuildAtlocation += StartNewPath;
+        Timer.Instance.onTimerStopped += TimerStopped;
         //Activate event listener
         EventManager.StartListening("RecalculatePath", RecalculatePath);
+    }
+
+    private void OnDestroy()
+    {
+        Timer.Instance.onTimerStopped -= TimerStopped;
     }
 
     private void StartNewPath(Vector2Int startCoordinates)
@@ -49,13 +56,16 @@ public class Tank : MonoBehaviour
     }
 
     private void RecalculatePath(bool notUsed)
-    {    
-        Vector2Int coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            Vector2Int coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
 
-        StopAllCoroutines();
-        path.Clear();
-        path = pathfinder.GetNewPath(coordinates);
-        StartCoroutine(FollowPathRoutine());
+            StopAllCoroutines();
+            path.Clear();
+            path = pathfinder.GetNewPath(coordinates);
+            StartCoroutine(FollowPathRoutine());
+        }   
     }
 
     private IEnumerator FollowPathRoutine()
@@ -68,6 +78,7 @@ public class Tank : MonoBehaviour
             startPosition = transform.position;
             endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
             CheckForRotateTank(startPosition, endPosition);
+            CheckForFlipSprite(startPosition, endPosition);
             float travelPercent = 0f;
 
             while (travelPercent < 1f)
@@ -82,9 +93,6 @@ public class Tank : MonoBehaviour
 
     private void CheckForRotateTank(Vector2 start, Vector2 end)
     {
-        spriteRendererTankHorizontal = transform.Find(horizontalTankSprite).GetComponent<SpriteRenderer>();
-        spriteRendererTankVertical = transform.Find(verticalTankSprite).GetComponent<SpriteRenderer>();
-
         if (start.y != end.y && tankRotatedHorizontal)
         {
             tankRotatedHorizontal = false;
@@ -99,5 +107,22 @@ public class Tank : MonoBehaviour
             spriteRendererTankVertical.enabled = false;
             Debug.Log("Tank now goes horizonal");
         }
+    }
+
+    private void CheckForFlipSprite(Vector2 start, Vector2 end)
+    {
+        if(tankRotatedHorizontal && start.x > end.x)
+        {
+            spriteRendererTankHorizontal.flipX = true;
+        }
+        else if (tankRotatedHorizontal && start.x < end.x)
+        {
+            spriteRendererTankHorizontal.flipX = false;
+        }        
+    }
+
+    private void TimerStopped()
+    {
+        StopAllCoroutines();
     }
 }

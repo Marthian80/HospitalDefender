@@ -47,6 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildTowerClip: {fileID: 8300000, guid: 1758e35fa3f2be946a7610e16e7bb8f0, type: 3}
   buildTowerVolume: 1
+  buildPosterClip: {fileID: 8300000, guid: d0fc220a7e578924f8026b6f305ad4a7, type: 3}
+  buildPosterVolume: 1
+  buildTankClip: {fileID: 8300000, guid: 1758e35fa3f2be946a7610e16e7bb8f0, type: 3}
+  buildTankVolume: 1
   buttonClickClip: {fileID: 8300000, guid: c821307f3577e4b48a3be48971ba395f, type: 3}
   buttonClickVolume: 1
   patientInfectedClip: {fileID: 8300000, guid: dbf9b1b50c2c4b94b938684788588a3b, type: 3}
@@ -59,7 +63,7 @@ MonoBehaviour:
   gameLostVolume: 0.8
   gameWonClip: {fileID: 8300000, guid: 09f2f79d10a4aa54881d89adb0bbe0c7, type: 3}
   gameWonVolume: 0.8
-  menuMusicClip: {fileID: 8300000, guid: 79fa1c4e3fee6ec429394167d948ec86, type: 3}
+  menuMusicClip: {fileID: 0}
   levelOneMusicClip: {fileID: 8300000, guid: be12c6934aece29489e5182bb5d32ab9, type: 3}
 --- !u!82 &2076240873495600219
 AudioSource:

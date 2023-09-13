@@ -11,6 +11,7 @@ public class Timer : Singleton<Timer>
 
     public event Action onTimerChange;
     public event Action onFullMinutePassed;
+    public event Action onTimerStopped;
 
     protected override void Awake()
     {
@@ -34,11 +35,20 @@ public class Timer : Singleton<Timer>
     public void StopTimer()
     {
         timerStopped = true;
+        if (onTimerStopped != null)
+        {
+            onTimerStopped();
+        }
+    }
+
+    public void SetTime(int time)
+    {
+        currentTimeLeft = time;
     }
 
     public void ResetTimer()
     {
-        currentTimeLeft = timeToSurviveLevel;
+        //currentTimeLeft = timeToSurviveLevel;
         timerStopped = false;
         if (onTimerChange!= null) 
         {
@@ -64,7 +74,11 @@ public class Timer : Singleton<Timer>
 
         if (currentTimeLeft <= 0)
         {
-            LevelManager.Instance.LoadLevelWon();
+            LevelManager.Instance.FinishedLevel();
+            if (onTimerStopped != null)
+            {
+                onTimerStopped();
+            }
         }
     }    
 }

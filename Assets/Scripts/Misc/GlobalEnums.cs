@@ -5,5 +5,5 @@ public static class GlobalEnums
         Poster = 0,
         Tower = 1,
         Tank = 2
-    };
+    };    
 }

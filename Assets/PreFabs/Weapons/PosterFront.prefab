@@ -96,7 +96,7 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 4
 --- !u!114 &1041034085344086513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,3 +109,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a5143e7c2e2e6247b6e7ef6ea96f26a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cost: 50
