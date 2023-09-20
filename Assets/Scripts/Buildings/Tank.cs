@@ -30,6 +30,7 @@ public class Tank : MonoBehaviour
 
         TankActivator.Instance.onTankBuildAtlocation += StartNewPath;
         Timer.Instance.onTimerStopped += TimerStopped;
+        Timer.Instance.onTimerResumed += TimerResumed;
         //Activate event listener
         EventManager.StartListening("RecalculatePath", RecalculatePath);
     }
@@ -37,6 +38,7 @@ public class Tank : MonoBehaviour
     private void OnDestroy()
     {
         Timer.Instance.onTimerStopped -= TimerStopped;
+        Timer.Instance.onTimerResumed -= TimerResumed;
     }
 
     private void StartNewPath(Vector2Int startCoordinates)
@@ -124,5 +126,13 @@ public class Tank : MonoBehaviour
     private void TimerStopped()
     {
         StopAllCoroutines();
+    }
+
+    private void TimerResumed()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            RecalculatePath(false);
+        }
     }
 }

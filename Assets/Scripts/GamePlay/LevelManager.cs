@@ -5,16 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    [SerializeField] private float sceneLoadDelay = 1f;
+    [SerializeField] private float sceneLoadDelay = 0.25f;
     [SerializeField] private int numberOfLevelsInGame = 3;
 
     public event Action onGameEnded;
     public event Action<int> onLevelFinished;
+    public event Action onShowIngameMenu;
+
+
 
     protected override void Awake()
     {
         base.Awake();
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (onShowIngameMenu != null)
+            {
+                onShowIngameMenu();
+            }
+        }
     }
 
     private void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
@@ -39,14 +53,12 @@ public class LevelManager : Singleton<LevelManager>
 
     public void LoadGameOver()
     {        
-        GameEnded(true);
-        //ResetGameData();
+        GameEnded(true);        
     }
 
     public void LoadLevelWon()
     {        
-        GameEnded(false);
-        //ResetGameData();
+        GameEnded(false);        
     }
 
     public void LoadGame()
@@ -78,8 +90,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public void LoadLevel(int sceneIndex)
     {       
-        StartCoroutine(WaitAndLoad("Level" + sceneIndex, sceneLoadDelay));
-        //ResetGameData();
+        StartCoroutine(WaitAndLoad("Level" + sceneIndex, sceneLoadDelay));       
     }
 
     public void FinishedLevel()

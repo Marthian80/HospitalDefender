@@ -18,12 +18,15 @@ public class BacteriaSpawner : MonoBehaviour
     {
         Timer.Instance.onFullMinutePassed += DecreaseSpawnTimer;
         Timer.Instance.onTimerStopped += TimerStopped;
+        Timer.Instance.onTimerResumed += TimerResumed;
         StartCoroutine(SpawnEnemy());
     }
 
     private void OnDestroy()
     {
         Timer.Instance.onTimerStopped -= TimerStopped;
+        Timer.Instance.onFullMinutePassed -= DecreaseSpawnTimer;
+        Timer.Instance.onTimerResumed -= TimerResumed;
     }
 
     private void PopulatePool()
@@ -60,11 +63,16 @@ public class BacteriaSpawner : MonoBehaviour
 
     private void DecreaseSpawnTimer()
     {
-        spawnTimer = spawnTimer / 2;
+        spawnTimer /= 2;
     }
 
     private void TimerStopped()
     {
         StopAllCoroutines();
+    }
+
+    private void TimerResumed()
+    {
+        StartCoroutine(SpawnEnemy());
     }
 }

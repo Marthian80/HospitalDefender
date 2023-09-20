@@ -12,6 +12,7 @@ public class Timer : Singleton<Timer>
     public event Action onTimerChange;
     public event Action onFullMinutePassed;
     public event Action onTimerStopped;
+    public event Action onTimerResumed;
 
     protected override void Awake()
     {
@@ -41,14 +42,22 @@ public class Timer : Singleton<Timer>
         }
     }
 
+    public void ResumeTimer()
+    {
+        timerStopped = false;
+        if (onTimerResumed != null)
+        {
+            onTimerResumed();
+        }
+    }
+
     public void SetTime(int time)
     {
         currentTimeLeft = time;
     }
 
     public void ResetTimer()
-    {
-        //currentTimeLeft = timeToSurviveLevel;
+    {        
         timerStopped = false;
         if (onTimerChange!= null) 
         {
