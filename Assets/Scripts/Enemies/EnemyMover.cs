@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnemyMover : MonoBehaviour
 {    
@@ -11,14 +12,17 @@ public class EnemyMover : MonoBehaviour
     private Gridmanager gridManager;
     private Pathfinding pathfinder;
     private Enemy enemy;
+    private BacteriaSpawner bacteriaSpawner;
+    private Vector2Int currentTarget;
 
-    private bool slownessTriggered = false;
+    private bool slownessTriggered = false;    
 
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();
         pathfinder = FindObjectOfType<Pathfinding>();
         enemy = FindObjectOfType<Enemy>();
+        bacteriaSpawner = FindObjectOfType<BacteriaSpawner>();        
 
         //Activate event listener
         EventManager.StartListening("RecalculatePath", RecalculatePath);
@@ -31,6 +35,16 @@ public class EnemyMover : MonoBehaviour
         ReturnToStart();
         RecalculatePath(true);
         slownessTriggered = false;
+        bacteriaSpawner.enemyInfectedTarget += OtherEnemyInfectedTarget;
+    }
+
+    //If other enemy already infected this enemy's target, set new target
+    private void OtherEnemyInfectedTarget(Vector2 otherEnemyTarget)
+    {
+        if (currentTarget.x == (int)otherEnemyTarget.x && currentTarget.y == (int)otherEnemyTarget.y)
+        {
+            StartNewPath(new Vector2Int((int)transform.position.x, (int)transform.position.y));
+        }
     }
 
     private void OnDestroy()
@@ -54,11 +68,21 @@ public class EnemyMover : MonoBehaviour
         }
     }
 
+    private void StartNewPath(Vector2Int startCoordinates)
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            pathfinder.SetStartPositionOnTheseCoordinates(startCoordinates);
+            currentTarget = pathfinder.SetRandomDestinationPosition();
+            transform.position = gridManager.GetPositionFromCoordinates(pathfinder.CurrentStartCoordinates);
+            RecalculatePath(false);
+        }
+    }
 
     private void ReturnToStart()
     {
         pathfinder.SetRandomStartPosition();
-        pathfinder.SetRandomDestinationPosition();
+        currentTarget = pathfinder.SetRandomDestinationPosition();
         transform.position = gridManager.GetPositionFromCoordinates(pathfinder.CurrentStartCoordinates);
     }
 
@@ -83,6 +107,7 @@ public class EnemyMover : MonoBehaviour
 
     private void FinishPath(Vector2 position)
     {
+        bacteriaSpawner.enemyInfectedTarget -= OtherEnemyInfectedTarget;
         gameObject.SetActive(false);
                 
         if (CheckForPatientToInfect(position))
@@ -90,6 +115,8 @@ public class EnemyMover : MonoBehaviour
             InfectionRate.Instance.InfectPatientAtLocation(position);
             enemy.StealGold();
         }
+
+        bacteriaSpawner.EnemyReachedTarget(position);
     }
 
     private bool CheckForPatientToInfect(Vector2 position)

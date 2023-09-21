@@ -25,8 +25,6 @@ public class Wall : MonoBehaviour
 
     private void OnMouseOver()
     {
-        Debug.Log($"Mouse over {gameObject.name}");
-
         if (buildPosterSeleted && Bank.Instance.CurrentBalance >= posterPrefab.Cost)
         {
             ShowBuildSpacePreview(spriteRendererPoster);

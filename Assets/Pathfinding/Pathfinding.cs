@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    [SerializeField] private List<Vector2Int> startCoordinates = new List<Vector2Int>();
-    [SerializeField] private List<Vector2Int> destinationCoordinates = new List<Vector2Int>();
+    [SerializeField] private List<Vector2Int> startCoordinates = new List<Vector2Int>();    
     [SerializeField] private List<Vector2Int> tankCoordinates = new List<Vector2Int>();
 
     private Vector2Int currentStartCoordinates;
@@ -19,6 +18,7 @@ public class Pathfinding : MonoBehaviour
     private Queue<Node> frontier = new Queue<Node>();
 
     private Gridmanager gridManager;
+    private TargetControl targetControl;
     Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
 
     private readonly Vector2Int[] directions = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
@@ -26,6 +26,7 @@ public class Pathfinding : MonoBehaviour
     private void Awake()
     {
         gridManager = FindObjectOfType<Gridmanager>();
+        targetControl = FindObjectOfType<TargetControl>();
 
         if (gridManager!= null )
         {
@@ -46,10 +47,13 @@ public class Pathfinding : MonoBehaviour
         startNode = grid[currentStartCoordinates];
     }
 
-    public void SetRandomDestinationPosition()
+    public Vector2Int SetRandomDestinationPosition()
     {
-        currentDestinationCoordinates = destinationCoordinates[Random.Range(0, destinationCoordinates.Count)];
+        var activeTargets = targetControl.GetActivePatientTargets();
+        currentDestinationCoordinates = activeTargets[Random.Range(0, activeTargets.Count)].coordinates;
         destinationNode = grid[currentDestinationCoordinates];
+
+        return currentDestinationCoordinates;
     }
 
     public void SetRandomTankDestinationPosition()

@@ -18,7 +18,10 @@ public class Flash : MonoBehaviour
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
-        defaultMat = spriteRenderer.material;
+        if (spriteRenderer != null)
+        {
+            defaultMat = spriteRenderer.material;
+        }
     }
 
     public float GetRestoreDefaultMatTime()
@@ -57,6 +60,34 @@ public class Flash : MonoBehaviour
                 externalSpriteRenderer.color = new Color(color.r, color.b, color.g, newAlpha);
                 yield return null;
             }
+        }
+    }
+
+    public IEnumerator SlowFadeOutRoutine(SpriteRenderer externalSpriteRenderer)
+    {
+        float elapsedTime = 0;
+        float startValue = externalSpriteRenderer.material.color.a;
+        var color = externalSpriteRenderer.color;
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startValue, 0f, elapsedTime / fadeTime);
+            externalSpriteRenderer.color = new Color(color.r, color.b, color.g, newAlpha);
+            yield return null;
+        }
+    }
+
+    public IEnumerator SlowFadeInRoutine(SpriteRenderer externalSpriteRenderer)
+    {
+        float elapsedTime = 0;
+        float startValue = externalSpriteRenderer.material.color.a;
+        var color = externalSpriteRenderer.color;
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(0f, startValue, elapsedTime / fadeTime);
+            externalSpriteRenderer.color = new Color(color.r, color.b, color.g, newAlpha);
+            yield return null;
         }
     }
 }
