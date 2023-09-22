@@ -44,7 +44,7 @@ public class Shooter : MonoBehaviour
         Vector2 targetDirection = target.position - transform.position;
         targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
 
-        if (targetDistance <= range && canAttack)
+        if (targetDistance <= range && canAttack && !Timer.Instance.GetTimerStopped())
         {
             canAttack = false;
             var newSoapBullet = Instantiate(bulletPreFab, gameObject.transform.position, quaternion.Euler(0, 0, targetDirection.x < 0 ? targetAngle : -targetAngle));

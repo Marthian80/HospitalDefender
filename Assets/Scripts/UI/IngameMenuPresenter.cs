@@ -13,7 +13,7 @@ public class IngameMenuPresenter : MonoBehaviour
         ingameMenuCanvas.enabled = false;
     }    
 
-    private void ShowIngameMenu()
+    public void ShowIngameMenu()
     {
         if (!ingameMenuCanvas.enabled)
         {
@@ -38,7 +38,7 @@ public class IngameMenuPresenter : MonoBehaviour
     public void RestartLevel()
     {
         LevelManager.Instance.onShowIngameMenu -= ShowIngameMenu;
-        LevelManager.Instance.LoadLevel(currentLevel);
+        LevelManager.Instance.FastLoadLevel(currentLevel);
         ingameMenuCanvas.enabled = false;
     }
 

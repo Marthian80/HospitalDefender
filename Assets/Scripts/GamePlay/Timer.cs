@@ -33,6 +33,11 @@ public class Timer : Singleton<Timer>
         }        
     }
 
+    public bool GetTimerStopped()
+    {
+        return timerStopped;
+    }
+
     public void StopTimer()
     {
         timerStopped = true;

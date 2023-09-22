@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: fe43104a840173f4dac477bba11e3cb5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,7 +136,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: b171b3206819fa04bb88c2147b17118f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -388,11 +388,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPrefab: {fileID: 6558783144758344008, guid: 0cb8117e756e74441a427ab559c739ac, type: 3}
-  posterPrefab: {fileID: 1041034085344086513, guid: ffc493456b1fcfc409fb8a58034af674, type: 3}
   tankPrefab: {fileID: 1275875736794249199, guid: 6a00b8165a2491a4996ea92130e6c3d8, type: 3}
+  posterPrefab: {fileID: 1041034085344086513, guid: ffc493456b1fcfc409fb8a58034af674, type: 3}
   buildMenu: {fileID: 4937808204675312843, guid: 284d2ec0f6a713e4ba7378bec4872a95, type: 3}
   isPlaceable: 0
-  isSuitableForPoster: 0
   isWalkable: 0
   containsPatient: 0
 --- !u!61 &4661777403842488668

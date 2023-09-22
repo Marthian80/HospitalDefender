@@ -93,6 +93,11 @@ public class LevelManager : Singleton<LevelManager>
         StartCoroutine(WaitAndLoad("Level" + sceneIndex, sceneLoadDelay));       
     }
 
+    public void FastLoadLevel(int sceneIndex)
+    {
+        SceneManager.LoadScene("Level" + sceneIndex);
+    }
+
     public void FinishedLevel()
     {        
         var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
