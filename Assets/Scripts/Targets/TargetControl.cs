@@ -7,9 +7,11 @@ public class TargetControl : MonoBehaviour
 {
     [SerializeField] private List<Patient> patients = new List<Patient>();
     [SerializeField] private float timePatientIsInactive = 3f;
+    [SerializeField] private float delayDisplayEffects = 1.2f;
 
     private BacteriaSpawner bacteriaSpawner;
     private Flash flash;
+    private PriceDisplay priceDisplaySteal;
 
     private void Awake()
     {
@@ -31,6 +33,10 @@ public class TargetControl : MonoBehaviour
             patient.isActive = false;
             var spriteRenderer = patient.patientGameObject.GetComponent<SpriteRenderer>();
             StartCoroutine(flash.SlowFadeOutRoutine(spriteRenderer));
+            if (Bank.Instance.CurrentBalance > 0)
+            {
+                StartCoroutine(DisplayInfectionFineRoutine(patient));
+            }            
             StartCoroutine(ReactivatePatient(patient, spriteRenderer));
         }
     }
@@ -43,7 +49,15 @@ public class TargetControl : MonoBehaviour
     private IEnumerator ReactivatePatient(Patient patient, SpriteRenderer patientSpriteRenderer)
     {
         yield return new WaitForSeconds(timePatientIsInactive);
+
         patient.isActive = true;
         StartCoroutine(flash.SlowFadeInRoutine(patientSpriteRenderer));
+    }
+
+    private IEnumerator DisplayInfectionFineRoutine(Patient patient)
+    {
+        priceDisplaySteal = patient.patientGameObject.transform.Find("InfectionFine").GetComponent<PriceDisplay>();
+        priceDisplaySteal.FloatPrice();
+        yield return new WaitForSeconds(delayDisplayEffects);
     }
 }

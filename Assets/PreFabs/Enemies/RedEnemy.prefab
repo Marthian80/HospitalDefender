@@ -165,6 +165,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHitPoints: 4
   deathVFX: {fileID: 4693821815289999644, guid: 8ff935b18a652d946a1f99be8e35b6a2, type: 3}
+  rewardPrice: {fileID: 7792804397784077460, guid: 856284fee5a0f2846acbe35d5b09ecee, type: 3}
+  delayDeadEffects: 0.8
 --- !u!114 &7845515856931252485
 MonoBehaviour:
   m_ObjectHideFlags: 0

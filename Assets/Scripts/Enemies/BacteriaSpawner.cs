@@ -10,6 +10,7 @@ public class BacteriaSpawner : MonoBehaviour
     
     private GameObject[] bacteriaPool;
     public event Action<Vector2> enemyInfectedTarget;
+    public event Action<Vector2> enemyKilled;
 
     private void Awake()
     {           
@@ -47,6 +48,14 @@ public class BacteriaSpawner : MonoBehaviour
         if (enemyInfectedTarget != null)
         {
             enemyInfectedTarget(targetLocation);
+        }
+    }
+
+    public void EnemyDestroyed(Vector2 targetLocation)
+    {
+        if (enemyKilled != null)
+        {
+            enemyKilled(targetLocation);
         }
     }
 

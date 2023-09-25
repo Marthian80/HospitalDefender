@@ -21,7 +21,7 @@ TagManager:
   - Enemies
   - Bullets
   - Tiles
-  - 
+  - UI Effects
   - 
   - 
   - 
@@ -45,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI Effects
+    uniqueID: 1608773693
     locked: 0

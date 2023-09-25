@@ -6,15 +6,18 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int maxHitPoints = 5;
     [SerializeField] private GameObject deathVFX;
+    [SerializeField] private GameObject rewardPrice;    
 
     private Flash flash;
-    private Enemy enemy;    
+    private Enemy enemy;
+    private BacteriaSpawner bacteriaSpawner;
     private int currentHitPoints = 0;
 
     private void Awake()
     {   
         enemy = GetComponent<Enemy>();
         flash = GetComponent<Flash>();
+        bacteriaSpawner = FindObjectOfType<BacteriaSpawner>();
     }
 
     private void OnEnable()
@@ -41,8 +44,11 @@ public class EnemyHealth : MonoBehaviour
         {
             Instantiate(deathVFX, transform.position, Quaternion.identity);
             enemy.RewardGold();
-            AudioPlayer.Instance.PlayEnemyDeadClip();
+            Vector2 test = new Vector2(transform.position.x, transform.position.y);
+            bacteriaSpawner.EnemyDestroyed(test);
+            //test.transform.position = transform.position;
             gameObject.SetActive(false);
         }
     }
+
 }
